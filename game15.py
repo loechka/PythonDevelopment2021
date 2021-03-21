@@ -12,7 +12,7 @@ class Application(tk.Frame):
         BOARD_SIZE = 4
         TOP_WIDTH, TOP_HEIGHT = 10, 4
 
-        top=self.winfo_toplevel()
+        top = self.winfo_toplevel()
         top.rowconfigure(0, weight=1)
         top.columnconfigure(0, weight=1)
         for i in range(BOARD_SIZE):
@@ -27,17 +27,28 @@ class Application(tk.Frame):
         self.NewButton.grid(row = 0, column = 0, columnspan = 2)
         # buttons
         self.buttons, self.numbers = list(), list(range(15))
+        self.empty_location = (4, 3)
         random.shuffle(self.numbers)
 
         for i in range(len(self.numbers)):
             number = self.numbers[i]
-            self.buttons.append(tk.Button(self, text=str(number+1)))
-            self.buttons[-1].grid(row=i//4+1, column=i%4, sticky="SEWN")
+            row, column = i//BOARD_SIZE+1, i%BOARD_SIZE
+            self.buttons.append(tk.Button(self, text = str(number+1), command = lambda x = i: self.click(x)))
+            self.buttons[-1].grid(row = row, column = column, sticky = "SEWN")
 
     def restart(self):
         self.destroy()
         self.__init__()
 
+    def click(self, index):
+        current_location = (self.buttons[index].grid_info()['row'], self.buttons[index].grid_info()['column'])
+        new_location = self.empty_location
+        row_diff = abs(new_location[0] - current_location[0])
+        column_diff = abs(new_location[1] - current_location[1])
+        if (row_diff == 1 and column_diff == 0) or (row_diff == 0 and column_diff == 1):
+            self.buttons[index].grid(row = new_location[0], column = new_location[1], sticky="SEWN")
+            self.empty_location = current_location
+            
 
 app = Application()
 app.master.title('GAME 15')

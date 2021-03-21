@@ -61,7 +61,6 @@ class Application(tk.Frame):
             current_location = (self.buttons[i].grid_info()['row'], self.buttons[i].grid_info()['column'])
             text = int(self.buttons[i].cget('text')) - 1
             index = (current_location[0] - 1) * self.BOARD_SIZE + current_location[1]
-            print(text, index)
             if text != index:
                 return False
         return True

@@ -24,8 +24,8 @@ class Application(tk.Frame):
         self.NewButton = tk.Button(self, text='New', command = self.restart, width = TOP_WIDTH, height = TOP_HEIGHT)
         self.ExitButton = tk.Button(self, text='Exit', command = self.quit, width = TOP_WIDTH, height = TOP_HEIGHT)
 
-        self.ExitButton.grid(row = 0, column = 2, columnspan = 2)
-        self.NewButton.grid(row = 0, column = 0, columnspan = 2)
+        self.ExitButton.grid(row = 0, column = 2, columnspan = 2, sticky = "SEWN")
+        self.NewButton.grid(row = 0, column = 0, columnspan = 2, sticky = "SEWN")
         # buttons
         self.buttons, self.numbers = list(), list(range(15))
         self.empty_location = (4, 3)

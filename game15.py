@@ -9,16 +9,16 @@ class Application(tk.Frame):
         self.createWidgets()
 
     def createWidgets(self):
-        BOARD_SIZE = 4
+        self.BOARD_SIZE = 4
         TOP_WIDTH, TOP_HEIGHT = 10, 4
 
         top = self.winfo_toplevel()
         top.rowconfigure(0, weight=1)
         top.columnconfigure(0, weight=1)
-        for i in range(BOARD_SIZE):
+        for i in range(self.BOARD_SIZE):
             self.rowconfigure(i, weight=1)
             self.columnconfigure(i, weight=1)
-        self.rowconfigure(BOARD_SIZE, weight=1)
+        self.rowconfigure(self.BOARD_SIZE, weight=1)
         # menu
         self.NewButton = tk.Button(self, text='New', command = self.restart, width = TOP_WIDTH, height = TOP_HEIGHT)
         self.ExitButton = tk.Button(self, text='Exit', command = self.quit, width = TOP_WIDTH, height = TOP_HEIGHT)
@@ -32,7 +32,7 @@ class Application(tk.Frame):
 
         for i in range(len(self.numbers)):
             number = self.numbers[i]
-            row, column = i//BOARD_SIZE+1, i%BOARD_SIZE
+            row, column = i//self.BOARD_SIZE+1, i%self.BOARD_SIZE
             self.buttons.append(tk.Button(self, text = str(number+1), command = lambda x = i: self.click(x)))
             self.buttons[-1].grid(row = row, column = column, sticky = "SEWN")
 
@@ -48,6 +48,20 @@ class Application(tk.Frame):
         if (row_diff == 1 and column_diff == 0) or (row_diff == 0 and column_diff == 1):
             self.buttons[index].grid(row = new_location[0], column = new_location[1], sticky="SEWN")
             self.empty_location = current_location
+        if self.correct_board():
+            messagebox.showinfo('', 'YOU ARE A WINNER!')
+            self.restart()
+    
+    def correct_board(self):
+        for i in range(len(self.numbers)):
+            current_location = (self.buttons[i].grid_info()['row'], self.buttons[i].grid_info()['column'])
+            text = int(self.buttons[i].cget('text'))
+            index = (current_location[0] - 1) * self.BOARD_SIZE + current_location[1]
+            if text != index:
+                return False
+        return True
+        
+    
             
 
 app = Application()
